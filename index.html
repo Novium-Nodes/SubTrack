@@ -1,0 +1,325 @@
+<!--
+  Copyright (c) 2026 NoviumNodes
+  Developed for team "NoviumNodes" by Yousef & Mohamed.
+  All rights reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SubTrack — Subscription Tracker</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Lucide Icons (CDN) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Decorative Frosted Glow Background Elements -->
+  <div class="glass-bg-glow" aria-hidden="true">
+    <div class="glow-spot glow-1"></div>
+    <div class="glow-spot glow-2"></div>
+    <div class="glow-spot glow-3"></div>
+  </div>
+
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Sidebar / Navigation (Collapsible on Mobile) -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i data-lucide="credit-card" class="logo-icon"></i>
+          <span>SubTrack</span>
+        </div>
+        <button class="close-sidebar-btn" id="closeSidebarBtn" aria-label="Close menu">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="nav-item active" data-tab="dashboard">
+            <a href="#">
+              <i data-lucide="layout-dashboard"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="analytics">
+            <a href="#">
+              <i data-lucide="pie-chart"></i>
+              <span>Analytics</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="presets">
+            <a href="#">
+              <i data-lucide="sparkles"></i>
+              <span>Quick Presets</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="avatar">G</div>
+          <div class="user-info">
+            <span class="user-name">guest</span>
+            <span class="user-plan">Pro Member</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Header -->
+      <header class="main-header">
+        <div class="header-left">
+          <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Toggle menu">
+            <i data-lucide="menu"></i>
+          </button>
+          <div class="header-title">
+            <h1 id="tabTitle">Dashboard</h1>
+            <p id="tabSubtitle" class="text-sm">Manage, analyze, and optimize your repeating payments</p>
+          </div>
+        </div>
+        
+        <div class="header-right">
+          <!-- Theme Option Toggle Button -->
+          <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle dark mode">
+            <i data-lucide="moon" id="themeIcon"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- View Wrapper -->
+      <div class="view-content" id="viewContent">
+        
+        <!-- DASHBOARD TAB CONTENT -->
+        <div id="dashboardTab" class="tab-pane active">
+          <div class="subtrack-large-grid">
+          
+          <!-- Key Metrics / Stats Cards -->
+          <section class="metrics-grid">
+            
+            <div class="metric-card shadow-sm" id="metricMonthlySpending">
+              <div class="metric-icon expense-icon">
+                <i data-lucide="dollar-sign"></i>
+              </div>
+              <div class="metric-details">
+                <span class="metric-label">Monthly Spending</span>
+                <h3 class="metric-value" id="statsMonthlySpend">$0.00</h3>
+                <span class="metric-subtext" id="statsYearlySpend">Yearly: $0.00</span>
+              </div>
+            </div>
+
+            <div class="metric-card shadow-sm" id="metricActiveCount">
+              <div class="metric-icon active-icon">
+                <i data-lucide="calendar"></i>
+              </div>
+              <div class="metric-details">
+                <span class="metric-label">Active Subscriptions</span>
+                <h3 class="metric-value" id="statsActiveCount">0</h3>
+                <span class="metric-subtext">All active services</span>
+              </div>
+            </div>
+
+            <div class="metric-card shadow-sm" id="metricNextPayment">
+              <div class="metric-icon renewal-icon">
+                <i data-lucide="bell"></i>
+              </div>
+              <div class="metric-details">
+                <span class="metric-label">Next Payment Due</span>
+                <h3 class="metric-value text-truncate" id="statsNextName">None</h3>
+                <span class="metric-subtext" id="statsNextDays">No upcoming renewals</span>
+              </div>
+            </div>
+
+          </section>
+
+            <!-- Left Column: Add Subscription Form -->
+            <section class="form-section shadow-sm">
+              <div class="section-header">
+                <i data-lucide="plus-circle" class="header-icon"></i>
+                <h2>Add Subscription</h2>
+              </div>
+              
+              <form id="subscriptionForm" novalidate>
+                <div class="form-group gap-sm">
+                  <label for="subName">Service Name</label>
+                  <input type="text" id="subName" placeholder="e.g. Netflix, Spotify, AWS" required minlength="2">
+                  <span class="error-msg" id="subNameError">Name is required</span>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="subCost">Cost ($)</label>
+                    <div class="input-prefix-container">
+                      <span class="input-prefix">$</span>
+                      <input type="number" id="subCost" placeholder="9.99" step="0.01" min="0.01" required>
+                    </div>
+                    <span class="error-msg" id="subCostError">Invalid amount</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="subCycle">Billing Cycle</label>
+                    <select id="subCycle">
+                      <option value="monthly" selected>Monthly</option>
+                      <option value="yearly">Yearly</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="subCategory">Category</label>
+                    <select id="subCategory">
+                      <option value="entertainment">Entertainment</option>
+                      <option value="utilities">Utilities</option>
+                      <option value="dev-tools">Dev Tools</option>
+                      <option value="productivity">Productivity</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="subRenewalDate">Renewal Date</label>
+                    <input type="date" id="subRenewalDate" required>
+                    <span class="error-msg" id="subRenewalError">Date is required</span>
+                  </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="trackSubBtn">
+                  <i data-lucide="plus"></i>
+                  <span>Track Subscription</span>
+                </button>
+              </form>
+            </section>
+
+            <!-- Right Column: Subscriptions List -->
+            <section class="list-section shadow-sm">
+              <div class="list-controls">
+                
+                <!-- Search & Filters Row -->
+                <div class="search-filter-row">
+                  <div class="search-box">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="searchBar" placeholder="Search service...">
+                  </div>
+
+                  <div class="filter-group">
+                    <select id="filterCategory" aria-label="Filter by Category">
+                      <option value="all">All Categories</option>
+                      <option value="entertainment">Entertainment</option>
+                      <option value="utilities">Utilities</option>
+                      <option value="dev-tools">Dev Tools</option>
+                      <option value="productivity">Productivity</option>
+                      <option value="other">Other</option>
+                    </select>
+
+                    <select id="sortField" aria-label="Sort subscriptions">
+                      <option value="daysLeft">Days Remaining</option>
+                      <option value="name">Service Name (A-Z)</option>
+                      <option value="cost">Amount (High-Low)</option>
+                      <option value="renewalDate">Renewal Date</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Content Area: List or Grid -->
+              <div class="subscriptions-container" id="subscriptionsContainer">
+                <table class="subscriptions-table" id="subscriptionsTable">
+                  <thead>
+                    <tr>
+                      <th>Service</th>
+                      <th>Category</th>
+                      <th>Billing</th>
+                      <th>Time to Renewal</th>
+                      <th>Cost</th>
+                      <th class="text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="subTableBody">
+                    <!-- Dynamic Rows Insertion -->
+                  </tbody>
+                </table>
+                
+                <!-- Grid layouts loaded on mobile -->
+                <div class="subscriptions-grid-mobile" id="subGridMobile">
+                  <!-- Dynamic Mobile Cards -->
+                </div>
+
+                <!-- Empty State Placeholder -->
+                <div class="empty-state hidden" id="emptyState">
+                  <div class="empty-icon-wrapper">
+                    <i data-lucide="folder-open"></i>
+                  </div>
+                  <h3>No subscription found</h3>
+                  <p>Try refining your search, categories filter, or insert a fresh service using the input form!</p>
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+        </div>
+
+        <!-- ANALYTICS TAB CONTENT -->
+        <div id="analyticsTab" class="tab-pane">
+          <div class="analytics-layout">
+            <div class="analytics-card card shadow-sm">
+              <div class="card-header">
+                <h2>Category Distribution Breakdowns</h2>
+                <p class="text-sm">Compare spending weights across individual service segments</p>
+              </div>
+              <div class="analytics-body">
+                <div class="chart-container-row">
+                  <!-- Visual Chart Bars -->
+                  <div class="chart-bars-list" id="categoryBars">
+                    <!-- Dynamic CSS bar list -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="analytics-card card shadow-sm">
+              <div class="card-header">
+                <h2>Saving Diagnostics & Smart Insights</h2>
+                <p class="text-sm">Personalized efficiency hints based on billing cycles</p>
+              </div>
+              <div class="analytics-body" id="analyticsInsights">
+                <!-- Smart calculated insights -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUICK PRESETS TAB CONTENT -->
+        <div id="presetsTab" class="tab-pane">
+          <div class="presets-container">
+            <div class="intro-box">
+              <h2>Quick Import Service Presets</h2>
+              <p>Skip filling forms by importing verified service presets directly with a single click.</p>
+            </div>
+            
+            <div class="presets-grid" id="presetsGrid">
+              <!-- Dynamically populated popular subscription cards -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
